@@ -2,6 +2,10 @@
 
 ## Changelog
 
+### 1.1.1
+
+ * Fixed a minor bug where the icon wouldn't be set apon a client reload.
+
 ### 1.1.0
 
  * Added the ability to use the icon of the current guild or DM.
