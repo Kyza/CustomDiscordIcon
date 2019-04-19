@@ -2,6 +2,11 @@
 
 ## Changelog
 
+### 1.1.0
+
+ * Added the ability to use the icon of the current guild or DM.
+ * Fixed some minor bugs.
+
 ### 1.0.0
 
  * Release.
