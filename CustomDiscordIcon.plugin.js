@@ -43,42 +43,7 @@ CustomDiscordIcon.prototype.start = function() {
   }, 5000);
 
   iconSetInterval = setInterval(() => {
-    if (loadSettings() != undefined) {
-      // TODO Make the plugin get the current guild icon, save it, and set it as the taskbar icon.
-      if (loadSettings().useGuildIcons) {
-        // If the user is in a guild...
-        if (ZLibrary.DiscordAPI.currentGuild && ZLibrary.DiscordAPI.currentGuild.icon) {
-          // Save the guild icon and set it as the icon.
-          var imageURL = ("https://cdn.discordapp.com/icons/" + ZLibrary.DiscordAPI.currentGuild.id + "/" + ZLibrary.DiscordAPI.currentGuild.icon + ".png");
-          download(imageURL, iconPath, function() {
-            win.setIcon(iconPath);
-          });
-        } else {
-          // The user isn't in a guild, so see if they are in a DM.
-          // If the user is in a DM, save the user's icon and set it as the icon.
-          if (ZLibrary.DiscordAPI.currentChannel) {
-            try {
-              var userAvatarURL = ZLibrary.DiscordAPI.currentChannel.recipient.avatarUrl;
-              download(userAvatarURL, iconPath, function() {
-                win.setIcon(iconPath);
-              });
-            } catch (e) {
-              // So the user is either not in a guild or DM.
-              // It's also possible that the guild or user does not have an icon.
-              // In this case we just set the icon to whatever the user specified in their settings.
-              try {
-                win.setIcon(loadSettings().customImagePath);
-              } catch (e2) {
-                // It's also possible that the user hasn't set a default icon as well.
-                console.error(e2);
-              }
-            }
-          }
-        }
-      } else {
-        win.setIcon(loadSettings().customImagePath);
-      }
-    }
+		setIcon();
   }, 1000);
 };
 
@@ -88,6 +53,47 @@ var download = function(uri, filename, callback) {
     request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
   });
 };
+
+function setIcon() {
+	if (loadSettings() != undefined) {
+		// TODO Make the plugin get the current guild icon, save it, and set it as the taskbar icon.
+		if (loadSettings().useGuildIcons) {
+			// If the user is in a guild...
+			if (ZLibrary.DiscordAPI.currentGuild && ZLibrary.DiscordAPI.currentGuild.icon) {
+				// Save the guild icon and set it as the icon.
+				var imageURL = ("https://cdn.discordapp.com/icons/" + ZLibrary.DiscordAPI.currentGuild.id + "/" + ZLibrary.DiscordAPI.currentGuild.icon + ".png");
+				download(imageURL, iconPath, function() {
+					win.setIcon(iconPath);
+				});
+			} else {
+				// The user isn't in a guild, so see if they are in a DM.
+				// If the user is in a DM, save the user's icon and set it as the icon.
+				if (ZLibrary.DiscordAPI.currentChannel) {
+					try {
+						var userAvatarURL = ZLibrary.DiscordAPI.currentChannel.recipient.avatarUrl;
+						download(userAvatarURL, iconPath, function() {
+							win.setIcon(iconPath);
+						});
+					} catch (e) {
+						// So the user is either not in a guild or DM.
+						// It's also possible that the guild or user does not have an icon.
+						// In this case we just set the icon to whatever the user specified in their settings.
+						try {
+							win.setIcon(loadSettings().customImagePath);
+						} catch (e2) {
+							// It's also possible that the user hasn't set a default icon as well.
+							console.error(e2);
+						}
+					}
+				} else {
+					win.setIcon(loadSettings().customImagePath);
+				}
+			}
+		} else {
+			win.setIcon(loadSettings().customImagePath);
+		}
+	}
+}
 
 CustomDiscordIcon.prototype.load = function() {};
 
@@ -101,37 +107,7 @@ CustomDiscordIcon.prototype.stop = function() {
 CustomDiscordIcon.prototype.onMessage = function() {};
 
 CustomDiscordIcon.prototype.onSwitch = function() {
-	if (loadSettings().useGuildIcons) {
-		// If the user is in a guild...
-		if (ZLibrary.DiscordAPI.currentGuild && ZLibrary.DiscordAPI.currentGuild.icon) {
-			// Save the guild icon and set it as the icon.
-			var imageURL = ("https://cdn.discordapp.com/icons/" + ZLibrary.DiscordAPI.currentGuild.id + "/" + ZLibrary.DiscordAPI.currentGuild.icon + ".png");
-			download(imageURL, iconPath, function() {
-				win.setIcon(iconPath);
-			});
-		} else {
-			// The user isn't in a guild, so see if they are in a DM.
-			// If the user is in a DM, save the user's icon and set it as the icon.
-			if (ZLibrary.DiscordAPI.currentChannel) {
-				try {
-					var userAvatarURL = ZLibrary.DiscordAPI.currentChannel.recipient.avatarUrl;
-					download(userAvatarURL, iconPath, function() {
-						win.setIcon(iconPath);
-					});
-				} catch (e) {
-					// So the user is either not in a guild or DM.
-					// It's also possible that the guild or user does not have an icon.
-					// In this case we just set the icon to whatever the user specified in their settings.
-					try {
-						win.setIcon(loadSettings().customImagePath);
-					} catch (e2) {
-						// It's also possible that the user hasn't set a default icon as well.
-						console.error(e2);
-					}
-				}
-			}
-		}
-	}
+	setIcon();
 };
 
 CustomDiscordIcon.prototype.observer = function(e) {
@@ -297,7 +273,7 @@ CustomDiscordIcon.prototype.getDescription = function() {
 };
 
 CustomDiscordIcon.prototype.getVersion = function() {
-  return "1.1.0";
+  return "1.1.1";
 };
 
 CustomDiscordIcon.prototype.getAuthor = function() {
