@@ -17,4 +17,4 @@
  
 ## Planned Features
 
- * Add the option to change the icon to the icon of the guild you currently have selected.
+ * I've done everything I wanted. Make an issue if you have an idea.
