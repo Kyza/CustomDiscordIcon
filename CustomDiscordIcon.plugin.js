@@ -1,4 +1,4 @@
-//META{"name":"CustomDiscordIcon","website":"https://github.com/KyzaGitHub/CustomDiscordIcon","source":"https://raw.githubusercontent.com/KyzaGitHub/CustomDiscordIcon/master/CustomDiscordIcon.plugin.js"}*//
+//META{"name":"CustomDiscordIcon","website":"https://github.com/KyzaGitHub/Khub","source":"https://raw.githubusercontent.com/KyzaGitHub/Khub/master/v1%20Plugins/CustomDiscordIcon/CustomDiscordIcon.plugin.js"}*//
 
 var CustomDiscordIcon = function() {};
 
@@ -28,18 +28,8 @@ CustomDiscordIcon.prototype.start = function() {
     document.head.appendChild(libraryScript);
   }
 
-  libraryScript = document.querySelector('head script[src="https://mwittrien.github.io/BetterDiscordAddons/Plugins/BDFDB.js"]');
-  if (!libraryScript || performance.now() - libraryScript.getAttribute("date") > 600000) {
-    if (libraryScript) libraryScript.remove();
-    libraryScript = document.createElement("script");
-    libraryScript.setAttribute("type", "text/javascript");
-    libraryScript.setAttribute("src", "https://mwittrien.github.io/BetterDiscordAddons/Plugins/BDFDB.js");
-    libraryScript.setAttribute("date", performance.now());
-    document.head.appendChild(libraryScript);
-  }
-
   updateInterval = setInterval(() => {
-    ZLibrary.PluginUpdater.checkForUpdate("CustomDiscordIcon", this.getVersion(), "https://raw.githubusercontent.com/KyzaGitHub/CustomDiscordIcon/master/CustomDiscordIcon.plugin.js");
+    ZLibrary.PluginUpdater.checkForUpdate("CustomDiscordIcon", this.getVersion(), "https://raw.githubusercontent.com/KyzaGitHub/Khub/master/v1%20Plugins/CustomDiscordIcon/CustomDiscordIcon.plugin.js");
   }, 5000);
 
   iconSetInterval = setInterval(() => {
